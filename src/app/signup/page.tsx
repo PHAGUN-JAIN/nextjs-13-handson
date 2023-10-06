@@ -1,20 +1,44 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import axios from "axios";
 
 
-
-
 export default function SignupPage(){
+    const router = useRouter();
+
     const [user, setUser] = React.useState({
         email:"",
         password:"",
         username:""
     })
 
-    const onSignup = async () =>{
+    const [buttonDisabled, setButtonDisabled] = React.useState(true);
+
+    const [loading, setLoading] = React.useState(false);
+
+    useEffect(()=>{
+        if(user.email.length>0 && user.password.length>0 && user.username.length>0){
+            setButtonDisabled(false);
+        }else{
+            setButtonDisabled(true);
+        }
+    }, [user]); 
+
+    const onSignup = async () => {
+        try {
+            setLoading(true);
+
+           const response = await axios.post("/api/users/signup", user);
+           console.log("signup success" + response.data);
+           router.push("/login")
+            
+        } catch (error : any) {
+            console.log("sign up failed " + error);
+        }finally{
+            setLoading(false);
+        }
 
     }
 
@@ -55,7 +79,7 @@ export default function SignupPage(){
                         <div>
                             <label htmlFor="name" className="text-base font-medium text-gray-900">
                             {' '}
-                            Full Name{' '}
+                            Full Name*{' '}
                             </label>
                             <div className="mt-2">
                             <input
@@ -71,7 +95,7 @@ export default function SignupPage(){
                         <div>
                             <label htmlFor="email" className="text-base font-medium text-gray-900">
                             {' '}
-                            Email address{' '}
+                            Email address*{' '}
                             </label>
                             <div className="mt-2">
                             <input
@@ -88,7 +112,7 @@ export default function SignupPage(){
                             <div className="flex items-center justify-between">
                             <label htmlFor="password" className="text-base font-medium text-gray-900">
                                 {' '}
-                                Password{' '}
+                                Password*{' '}
                             </label>
                             </div>
                             <div className="mt-2">
@@ -106,11 +130,15 @@ export default function SignupPage(){
                             <button
                             type="button"
                             onClick={onSignup}
+                            disabled={buttonDisabled}
                             className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                             >
-                                Create Account
+                                {buttonDisabled ? "All values are mandatory *" : "Create Account"}
                             {/* Create Account <ArrowRight className="ml-2" size={16} /> */}
                             </button>
+                        </div>
+                        <div>
+                            {loading ? "Processing request...." : ""}
                         </div>
                     </div>
                 </form>

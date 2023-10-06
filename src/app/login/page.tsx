@@ -1,18 +1,45 @@
 // import { ArrowRight } from 'lucide-react'
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import axios from "axios";
 
 
 export default function LoginPage(){
+  const router = useRouter();
+
   const [user, setUser] = React.useState({
     email:"",
     password:""
   })
 
+  const [buttonDisabled, setButtonDisabled] = React.useState(true);
+
+  const [loading, setLoading] = React.useState(false);
+
+  useEffect(()=>{
+    if(user.email.length>0 && user.password.length>0){
+        setButtonDisabled(false);
+    }else{
+        setButtonDisabled(true);
+    }
+}, [user]); 
+
   const onLogin = async () => {
+
+    try {
+      setLoading(true)
+
+      const response = await axios.post("/api/users/login", user);
+      console.log(response);
+      router.push("/profile");
+
+    } catch (error : any) {
+      console.log("login failed " + error)
+    }finally{
+      setLoading(false);
+    }
 
   }
     return(
@@ -89,11 +116,15 @@ export default function LoginPage(){
                       <button
                         type="button"
                         onClick={onLogin}
+                        disabled={buttonDisabled}
                         className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                       >
-                          Get started
+                          {buttonDisabled ? "Provide creds" : "Get started"}
                         {/* Get started <ArrowRight className="ml-2" size={16} /> */}
                       </button>
+                    </div>
+                    <div>
+                      {loading ? "Processing request..." : ""}
                     </div>
                   </div>
                 </form>
