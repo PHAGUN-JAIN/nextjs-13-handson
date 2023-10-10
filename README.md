@@ -20,17 +20,14 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Notes
 
-To learn more about Next.js, take a look at the following resources:
+tried to follow [Learn Next.js by building a custom API with MongoDB using the latest app router.](https://youtu.be/ETV17M4SauU?si=Lt71M4JzrjT4lGWv)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Nextjs is a framework on top of Reactjs library, it requires the user to follow strict conventions, everyting from foldernames to decorators
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- it supports server side rendering i.e. the pages are rendered on server itself and then served to the client
+- the backend related stuff is kept under api folder which is lining in src folder
+- middleware needs to nemed middleware.ts itself
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[nextjs documentation](https://nextjs.org/docs/app/building-your-application)
